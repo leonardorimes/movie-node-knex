@@ -1,7 +1,19 @@
+// importando conexão com o banco de dados
+const knex = require("../database/knex");
+// importanto o tratamento de exceções
+const AppError = require("../utils/AppError");
+
 class SessionsController {
     async create(request, response){
         const { email, password } = request.body;
-        return response.json({ email, password});
+
+        const user = await knex("users").where({email}).first();
+
+        if( !user ){
+            throw new AppError(" Email e/ou senha incorreta", 401)
+        }
+
+        return response.json({ user });
     }
 }
 
