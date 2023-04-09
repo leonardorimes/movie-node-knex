@@ -34,7 +34,7 @@ class SessionsController {
         })
 
     
-
+        
 
         return response.json({ user, token });
     }
