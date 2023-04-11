@@ -27,10 +27,10 @@ class UsersController {
 
     async update(request, response){
         const {name, email, password, old_password} = request.body;
-        const { id } = request.params;
+        const user_id = request.user.id;
 
         const database = await sqliteConnection();
-        const user = await database.get("SELECT * FROM users where id = (?)", [id]);
+        const user = await database.get("SELECT * FROM users where id = (?)", [user_id]);
 
         if(!user){
             throw new AppError("Usuário não encontrado");
@@ -73,7 +73,7 @@ class UsersController {
           updated_at = DATETIME('now')
           WHERE id= ?`,
 
-          [user.name, user.email, user.password, id]
+          [user.name, user.email, user.password, user_id]
        );
 
 
